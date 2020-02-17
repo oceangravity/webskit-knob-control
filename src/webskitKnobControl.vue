@@ -1,5 +1,5 @@
 <template>
-  <div class="wk-knob-control-wrapper" @scroll="onScroll">
+  <div class="wk-knob-control-wrapper" @mousewheel="mouseScroll">
     <div class="wk-knob-control" ref="knobControl" :style="{ width: `${options.size}px`, height: `${options.size}px`}">
 
       <div class="wk-knob-circle" :style="{ 'background-color': options.arcBackgroundColor }">
@@ -61,7 +61,17 @@ export default {
   name: 'WebskitKnobControl',
   data () {
     return {
-      wheelDegrees: 0
+      dragging: false
+    }
+  },
+  computed: {
+    wheelDegrees: {
+      get: function () {
+        return this.value
+      },
+      set: function (value) {
+        this.$emit('input', parseFloat(value))
+      }
     }
   },
   props: {
@@ -86,50 +96,20 @@ export default {
   },
   mounted () {
     const me = this
-    let dragging = false
 
     this.$nextTick(() => {
       me.$refs.knobControl.addEventListener('mousedown', (e) => {
-        dragging = true
-        onMousemove(e)
+        me.dragging = true
+        me.onMousemove(e)
       })
 
       document.addEventListener('mouseup', () => {
-        dragging = false
+        me.dragging = false
       })
 
-      document.addEventListener('mousemove', (e) => {
-        if (dragging) onMousemove(e)
-      })
+      window.addEventListener('mousemove', me.onMousemove, false)
 
-      window.addEventListener('mousewheel', mouseScroll, false)
-
-      function mouseScroll (event) {
-        if (event.wheelDelta >= 0) {
-          me.wheelDegrees++
-          if (me.wheelDegrees > 360) me.wheelDegrees = 0
-          me.wheelDegrees = parseInt(me.wheelDegrees)
-          me.setDegrees(me.wheelDegrees)
-        } else {
-          me.wheelDegrees--
-          if (me.wheelDegrees < 0) me.wheelDegrees = 360
-          me.wheelDegrees = parseInt(me.wheelDegrees)
-          me.setDegrees(me.wheelDegrees)
-        }
-      }
-
-      const onMousemove = (e) => {
-        const eyes = me.$refs.knobAxis
-        const mouseX = (eyes.getBoundingClientRect().left + (eyes.getBoundingClientRect().width / 2))
-        const mouseY = (eyes.getBoundingClientRect().top + (eyes.getBoundingClientRect().height / 2))
-        const radianDegrees = Math.atan2(e.pageX - mouseX, e.pageY - mouseY)
-        const rotationDegrees = (radianDegrees * (180 / Math.PI) * -1) + 180
-        me.wheelDegrees = rotationDegrees
-        me.setDegrees(rotationDegrees)
-        this.$emit('input', rotationDegrees)
-      }
-
-      me.wheelDegrees = me.value
+      me.setDegrees(me.value)
     })
   },
   destroyed () {
@@ -140,6 +120,34 @@ export default {
     }
   },
   methods: {
+    onMousemove (event) {
+      const me = this
+      if (!me.dragging) return
+      const eyes = me.$refs.knobAxis
+      const mouseX = (eyes.getBoundingClientRect().left + (eyes.getBoundingClientRect().width / 2))
+      const mouseY = (eyes.getBoundingClientRect().top + (eyes.getBoundingClientRect().height / 2))
+      const radianDegrees = Math.atan2(event.pageX - mouseX, event.pageY - mouseY)
+      me.wheelDegrees = (radianDegrees * (180 / Math.PI) * -1) + 180
+    },
+    mouseScroll (event) {
+      const me = this
+      if (event.wheelDelta === 120) {
+        console.log(event.wheelDelta)
+        me.wheelDegrees = me.wheelDegrees + 1
+        if (me.wheelDegrees > 360) me.wheelDegrees = 0
+        me.wheelDegrees = parseInt(me.wheelDegrees)
+        me.wheelDegrees = me.wheelDegrees.toFixed(0)
+        me.wheelDegrees = me.wheelDegrees + 1
+        if (me.wheelDegrees > 360) me.wheelDegrees = 0
+      } else {
+        me.wheelDegrees = me.wheelDegrees - 1
+        if (me.wheelDegrees < 0) me.wheelDegrees = 360
+        me.wheelDegrees = parseInt(me.wheelDegrees)
+        me.wheelDegrees = me.wheelDegrees.toFixed(0)
+        me.wheelDegrees = me.wheelDegrees - 1
+        if (me.wheelDegrees < 0) me.wheelDegrees = 360
+      }
+    },
     setDegrees (degrees) {
       if (isNaN(degrees)) return
       if (degrees > 360) degrees = 0
@@ -148,13 +156,6 @@ export default {
       this.$refs.knobArc.setAttribute('d', this.toArc(this.options.size / 2, this.options.size / 2, this.options.size / 3, 0, degrees))
       this.$refs.knobArc.setAttribute('stroke-width', (this.options.size / 10).toString())
       this.$refs.knobArc.setAttribute('stroke', this.options.arcColor)
-      this.$emit('input', parseFloat(this.wheelDegrees))
-    },
-    onMouseDown (event) {
-      if (event.target !== this.$refs.pointerCenter) {
-        this.moving = true
-        this.move(event)
-      }
     },
     toArc (x, y, radius, startAngle, endAngle) {
       const start = this.ptc(x, y, radius, endAngle)
@@ -174,16 +175,6 @@ export default {
         x: centerX + (radius * Math.cos(angleInRadians)),
         y: centerY + (radius * Math.sin(angleInRadians))
       }
-    },
-    onMouseUp () {
-      this.moving = false
-    },
-    onMouseMove (event) {
-      if (this.moving) {
-        this.move(event)
-      }
-    },
-    onScroll () {
     }
   }
 }

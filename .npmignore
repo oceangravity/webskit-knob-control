@@ -2,6 +2,7 @@
 webpack.config.js
 /.github
 /tests
+/dev
 
 .DS_Store
 node_modules
