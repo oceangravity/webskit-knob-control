@@ -119,7 +119,7 @@ export default {
       }
 
       const onMousemove = (e) => {
-        const eyes = document.querySelector('.wk-knob-axis')
+        const eyes = me.$refs.knobAxis
         const mouseX = (eyes.getBoundingClientRect().left + (eyes.getBoundingClientRect().width / 2))
         const mouseY = (eyes.getBoundingClientRect().top + (eyes.getBoundingClientRect().height / 2))
         const radianDegrees = Math.atan2(e.pageX - mouseX, e.pageY - mouseY)
