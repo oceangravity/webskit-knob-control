@@ -33,7 +33,7 @@
 
       <div class="wk-know-point-wrapper wk-knob-rotate-45">
         <div class="wk-know-point-wrapper-bar">
-          <div class="wk-know-point" :style="{ 'background-color': options.setPositionColor, width: `${options.size / 15}px`, height: `${options.size / 15}px`}" @mousedown.prevent.stop="setDegrees(45)" @click="setDegrees(45)" jest-wk-knob-rotate-45></div>
+          <div class="wk-know-point jest-45" :style="{ 'background-color': options.setPositionColor, width: `${options.size / 15}px`, height: `${options.size / 15}px`}" @mousedown.prevent.stop="setDegrees(45)"></div>
           <div class="wk-know-point" :style="{ 'background-color': options.setPositionColor, width: `${options.size / 15}px`, height: `${options.size / 15}px`}" @mousedown.prevent.stop="setDegrees(225)"></div>
         </div>
       </div>
@@ -132,7 +132,6 @@ export default {
     mouseScroll (event) {
       const me = this
       if (event.wheelDelta === 120) {
-        console.log(event.wheelDelta)
         me.wheelDegrees = me.wheelDegrees + 1
         if (me.wheelDegrees > 360) me.wheelDegrees = 0
         me.wheelDegrees = parseInt(me.wheelDegrees)

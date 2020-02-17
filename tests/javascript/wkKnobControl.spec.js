@@ -12,12 +12,17 @@ describe('webskitKnobControl', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.vm.wheelDegrees).toBe(0)
+    wrapper.vm.$nextTick(async () => {
+      wrapper.find('.jest-45').trigger('mousedown')
+      await wrapper.vm.$nextTick()
+      wrapper.vm.$nextTick(() => {
+        console.log(wrapper.vm.wheelDegrees)
+        wrapper.vm.$nextTick(() => {
+          console.log(wrapper.vm.value)
+        })
+      })
+    })
 
-    wrapper.find('[jest-wk-knob-rotate-45]').trigger('mousedown')
-
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.vm.wheelDegrees).toBe('45.00')
+    // expect(wrapper.vm.value).toBe('45.00')
   })
 })
