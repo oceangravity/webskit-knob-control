@@ -6,6 +6,10 @@
 # WebsKit Knob Control
 [![npm](https://nodei.co/npm/webskit-knob-control.svg?downloads=true)](https://nodei.co/npm/webskit-knob-control/)
 
+<p align="center">
+  <img width="460" height="auto" src="https://github.com/oceangravity/webskit-knob-control/blob/master/dev/demo.gif?raw=true">
+</p>
+
 ## About
 
 Simple but elegant knob control made with Vue.
