@@ -12,8 +12,7 @@ Simple but elegant knob control made with Vue.
 
 ## Demo
 
-[![Edit WebsKit Gradient Parser](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/gradient-parser-bexc5?fontsize=14&hidenavigation=1&theme=dark)
-
+[![Edit WebsKit Knob Control](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/webskit-knob-control-kssgu?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Usage
 
