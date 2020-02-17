@@ -124,6 +124,7 @@ export default {
         const mouseY = (eyes.getBoundingClientRect().top + (eyes.getBoundingClientRect().height / 2))
         const radianDegrees = Math.atan2(e.pageX - mouseX, e.pageY - mouseY)
         const rotationDegrees = (radianDegrees * (180 / Math.PI) * -1) + 180
+        me.wheelDegrees = rotationDegrees
         me.setDegrees(rotationDegrees)
       }
 
