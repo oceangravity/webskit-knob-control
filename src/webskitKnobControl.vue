@@ -126,6 +126,7 @@ export default {
         const rotationDegrees = (radianDegrees * (180 / Math.PI) * -1) + 180
         me.wheelDegrees = rotationDegrees
         me.setDegrees(rotationDegrees)
+        this.$emit('input', rotationDegrees)
       }
 
       me.wheelDegrees = me.value
