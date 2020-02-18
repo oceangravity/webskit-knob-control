@@ -227,10 +227,11 @@ export default {
     justify-content: center;
     align-items: center;
     height: 14px;
-    width: 33%;
+    width: 40%;
     font-weight: 700;
     pointer-events: all;
     z-index: 999999;
+    overflow: hidden;
 
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -335,6 +336,13 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     pointer-events: all;
+    transform: scale(.8);
+    opacity: .7;
+  }
+
+  .wk-know-point:hover {
+    transform: scale(1);
+    opacity: 1;
   }
 
   .wk-knob-rotate-45 {
